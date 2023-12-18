@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "img": "images/IMG-20231206-WA0009.jpg",
+        "name": "Rexina Bracelet",
+        "price": 6000
+    },
+    {
+        "id": 2,
+        "img": "images/IMG-20231206-WA0010.jpg",
+        "name": "Saphhire Bracelet",
+        "price": 5500
+    },
+    {
+        "id": 3,
+        "img": "images/IMG-20231206-WA0013.jpg",
+       "name": "Alloy Bracelet",
+        "price": 8500
+    },
+    {
+        "id": 4,
+        "img": "images/IMG-20231206-WA0014.jpg",
+        "name": "Medusa's Bracelet",
+       "price": 7000
+    },
+    {
+        "id": 5,
+        "img": "images/IMG-20231206-WA0015.jpg",
+        "name": "Thinkerbell Jewellery set",
+        "price": 15000
+    },
+    {
+        "id": 6,
+        "img": "images/IMG-20231206-WA0016.jpg",
+        "name": "Joanne's Jewellery set",
+        "price": 28000
+    },
+    {
+        "id": 7,
+        "img": "images/IMG-20231206-WA0017.jpg",
+        "name": "Saphhire Jewellery set",
+        "price": 17500
+    },
+    {
+        "id": 8,
+        "img": "images/IMG-20231206-WA0018.jpg",
+        "name": "Hercules Jewellery set",
+        "price": 19650
+    },
+    {
+        "id": 9,
+        "img": "images/IMG-20231206-WA0019.jpg",
+        "name": "Kathrina's Jewellery set",
+        "price": 37185
+    }
+]
