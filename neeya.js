@@ -10,7 +10,10 @@ let body = document.querySelector("body");
 let closeCart = document.querySelector(".close");
 let checkoutcart = document.querySelector(".checkOut");
 let listProduct = document.querySelector(".second-sec");
-let mark = document.querySelectorAll(".cartcontainer")
+let mark = document.querySelectorAll(".cartcontainer");
+let listCart = document.querySelector('.listCart');
+const totalAmount = document.querySelector(".totalAmount");
+const listArr = [];
 
 let secondSec = [];
 
@@ -26,6 +29,31 @@ const products = {
     'Hercules Jewellery set' : 0,
     "Kathrina's Jewellery set" : 0,
 }
+
+
+listCart.addEventListener('click', (e) => {
+    if(e.target.classList.contains("decrease")) {
+        const mainPrice = parseInt(e.target.parentElement.parentElement.querySelector(".totalPrice span").textContent) / parseInt(e.target.parentElement.querySelector("span:nth-of-type(2)").textContent)
+        e.target.parentElement.querySelector("span:nth-of-type(2)").textContent--;
+        cartNum.querySelector("p").textContent--;
+        e.target.parentElement.parentElement.querySelector(".totalPrice span").textContent = parseInt(e.target.parentElement.parentElement.querySelector(".totalPrice span").textContent) - mainPrice;
+        totalAmount.textContent = parseInt(totalAmount.textContent) - parseInt(mainPrice);
+
+        if(cartNum.querySelector("p").textContent <= 0){
+            cartNum.querySelector("p").textContent = 0
+        }
+        
+        if(e.target.parentElement.querySelector("span:nth-of-type(2)").textContent == "0") {
+            listCart.removeChild(e.target.parentElement.parentElement);
+        }
+    }
+    if(e.target.classList.contains("increase")) {
+        const mainPrice = parseInt(e.target.parentElement.parentElement.querySelector(".totalPrice span").textContent) / parseInt(e.target.parentElement.querySelector("span:nth-of-type(2)").textContent)
+        e.target.parentElement.querySelector("span:nth-of-type(2)").textContent++;
+        e.target.parentElement.parentElement.querySelector(".totalPrice span").textContent = parseInt(e.target.parentElement.parentElement.querySelector(".totalPrice span").textContent) + mainPrice;
+        totalAmount.textContent = parseInt(totalAmount.textContent) + parseInt(mainPrice); 
+    }
+})
 
 // this button here is to like a product using eventlistener
 heart.forEach((btn) => {
@@ -57,16 +85,84 @@ addCart.forEach((btn) => {
     btn.addEventListener('click', (e) => {
         const title = e.target.parentNode.parentNode.parentNode.parentNode.querySelector(".pricing h3").textContent;
         const count = document.querySelector("#countcart");
-        const quantity = e.target.parentElement.parentElement.parentElement.querySelector(".num-amount").textContent;
+        const quantity1 = e.target.parentElement.parentElement.parentElement.querySelector(".num-amount").textContent;
+        e.target.parentElement.parentElement.parentElement.querySelector(".num-amount").textContent = "0"
         if(products.hasOwnProperty(title)) {
             let sum = 0;
-            products[title] = parseInt(quantity);
+            products[title] = parseInt(quantity1);
             for(let i in products) {
                 sum += products[i]
             }
             count.textContent = sum;
         }
+        let itemId = e.target.parentElement.parentElement.parentElement.parentElement.id;
         
+        secondSec.map(pro => {
+            if(pro.id == parseInt(itemId) && quantity1 !== "0") {
+                if(listArr.includes(pro.name)) {
+                    console.log("Yes")
+                    let theOne = "";
+                    listCart.querySelectorAll(".cartitem").forEach(list => {
+                        if(list.querySelector(".name h2").textContent == pro.name) {
+                            theOne = list.querySelector(".name h2");
+                        }
+                    });
+                    console.log(theOne)
+                    theOne.parentElement.parentElement.querySelector(".quantity span:nth-of-type(2)").textContent = parseInt(theOne.parentElement.parentElement.querySelector(".quantity span:nth-of-type(2)").textContent) + parseInt(quantity1);
+
+                    totalAmount.textContent = parseInt(totalAmount.textContent) + parseInt(pro.price * parseInt(quantity1));
+
+                    theOne.parentElement.parentElement.querySelector(".totalPrice span").textContent = parseInt(theOne.parentElement.parentElement.querySelector(".totalPrice span").textContent) + (pro.price * parseInt(quantity1));
+
+                    cartNum.querySelector("p").textContent = parseInt(cartNum.querySelector("p").textContent) + parseInt(quantity1);
+                } else {
+                    listArr.push(pro.name);
+                console.log(listArr)
+                const cartItem = document.createElement("div");
+                cartItem.classList.add("cartitem");
+                const image = document.createElement("div");
+                image.classList.add("image");
+                const name = document.createElement("div");
+                name.classList.add("name");
+                const totalPrice = document.createElement("div");
+                totalPrice.classList.add("totalPrice");
+                const quantity = document.createElement("div");
+                quantity.classList.add("quantity");
+                const img = document.createElement("img");
+                img.src = pro.img;
+                img.alt = pro.name;
+                image.append(img);
+                const h2 = document.createElement("h2");
+                h2.textContent = pro.name;
+                const p = document.createElement("p");
+                const priceSpan = document.createElement("span");
+                p.textContent = "NGN ";
+                priceSpan.textContent = pro.price * parseInt(quantity1);
+                totalAmount.textContent = parseInt(totalAmount.textContent) + parseInt(priceSpan.textContent)
+                p.append(priceSpan);
+                const decSpan = document.createElement("span");
+                const incSpan = document.createElement("span");
+                const quanSpan = document.createElement("span");
+                decSpan.textContent = "-";
+                incSpan.textContent = "+";
+                decSpan.classList.add("decrease");
+                incSpan.classList.add("increase");
+                quanSpan.textContent = quantity1;
+                quantity.append(decSpan)
+                quantity.append(quanSpan)
+                quantity.append(incSpan)
+                
+                name.append(h2);
+                totalPrice.append(p);
+                cartItem.append(image);
+                cartItem.append(name);
+                cartItem.append(totalPrice);
+                cartItem.append(quantity);
+                listCart.append(cartItem);
+                }
+                
+            }
+        })
     })
 })
 
@@ -102,7 +198,6 @@ const initApp = () => {
     .then(response => response.json())
     .then(data => {
         secondSec = data;
-        addtoCart();
     })
 }
 initApp();
